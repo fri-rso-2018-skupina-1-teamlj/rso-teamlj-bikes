@@ -14,7 +14,9 @@ public class Bike {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String location;
+    private String longitude;
+
+    private String latitude;
 
     private String status;
 
@@ -26,12 +28,20 @@ public class Bike {
         this.id = id;
     }
 
-    public String getLocation() {
-        return location;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
     public String getStatus() {
