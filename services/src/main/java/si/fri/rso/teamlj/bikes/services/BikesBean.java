@@ -26,18 +26,9 @@ public class BikesBean {
 
     private Logger log = Logger.getLogger(BikesBean.class.getName());
 
-    private Client httpClient;
-
-    private String baseUrl;
-
     @Inject
     private EntityManager em;
 
-    @PostConstruct
-    private void init() {
-        httpClient = ClientBuilder.newClient();
-        baseUrl = "http://localhost:8081"; // only for demonstration
-    }
 
     public List<Bike> getBikes(UriInfo uriInfo) {
 
@@ -75,50 +66,61 @@ public class BikesBean {
 
     public Bike putBike(Integer bikeId, Bike bike) {
 
-        Bike s = em.find(Bike.class, bikeId);
+        Bike b = em.find(Bike.class, bikeId);
 
-        if (s == null) {
+        if (b == null) {
             return null;
         }
 
         try {
             beginTx();
-            s.setId(s.getId());
-            s = em.merge(s);
+            b.setId(b.getId());
+            b = em.merge(b);
             commitTx();
         } catch (Exception e) {
             rollbackTx();
         }
 
-        return s;
+        return b;
     }
 	
-	/** TODO spremeni to metodo **/
-    /*public Bike bikeDelivered(Integer bikeId) {
+	/** posodobimo status kolesa na zaseden **/
+    public Bike bikeTaken(Integer bikeId) {
 
         Bike bike = getBike(bikeId);
 
         try {
             beginTx();
-            bike.setStatus("delivered");
+            bike.setStatus("taken");
             commitTx();
         } catch (Exception e) {
             rollbackTx();
         }
 
-        try {
-            httpClient
-                    .target(baseUrl + "/v1/orders/" + bike.getOrderId() + "/completed")
-                    .request()
-                    .build("PATCH", Entity.json(""))
-                    .invoke();
-        } catch (WebApplicationException | ProcessingException e) {
-            log.severe(e.getMessage());
-            throw new InternalServerErrorException(e);
+        return bike;
+    }
+
+    /** posodobimo status kolesa na prost **/
+    public Bike bikeFee(Integer bikeId ,Bike bike) {
+
+        Bike b = em.find(Bike.class, bikeId);
+
+        if (b == null) {
+            return null;
         }
 
-        return bike;
-    }*/
+        try {
+            beginTx();
+            b.setId(b.getId());
+            b.setStatus("free");
+            b = em.merge(b);
+            commitTx();
+        } catch (Exception e) {
+            rollbackTx();
+        }
+
+        return b;
+    }
 
     public boolean deleteBike(String bikeId) {
 

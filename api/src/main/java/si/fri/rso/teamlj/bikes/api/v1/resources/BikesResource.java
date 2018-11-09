@@ -73,11 +73,11 @@ public class BikesResource {
         }
     }
 
-    /*@PATCH
-    @Path("{bikeId}/delivered")
-    public Response bikeDelivered(@PathParam("bikeId") Integer bikeId) {
+    @PATCH
+    @Path("{bikeId}/taken")
+    public Response bikeTaken(@PathParam("bikeId") Integer bikeId) {
 
-        Bike bike = bikesBean.bikeDelivered(bikeId);
+        Bike bike = bikesBean.bikeTaken(bikeId);
 
         if (bike == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -87,7 +87,24 @@ public class BikesResource {
             else
                 return Response.status(Response.Status.NOT_MODIFIED).build();
         }
-    }*/
+    }
+
+    @PUT
+    @Path("{bikeId}/free")
+    public Response bikeFree(@PathParam("bikeId") Integer bikeId, Bike bike) {
+
+        bike = bikesBean.bikeFee(bikeId, bike);
+
+        if (bike == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        } else {
+            if (bike.getId() != null)
+                return Response.status(Response.Status.OK).entity(bike).build();
+            else
+                return Response.status(Response.Status.NOT_MODIFIED).build();
+        }
+    }
+
 
     @DELETE
     @Path("{bikeId}")
