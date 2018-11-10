@@ -101,7 +101,7 @@ public class BikesBean {
     }
 
     /** posodobimo status kolesa na prost **/
-    public Bike bikeFee(Integer bikeId ,Bike bike) {
+    public Bike bikeFee(Integer bikeId, Bike bike) {
 
         Bike b = em.find(Bike.class, bikeId);
 
