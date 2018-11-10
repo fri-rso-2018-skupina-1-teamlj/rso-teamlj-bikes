@@ -1,7 +1,7 @@
 package si.fri.rso.teamlj.bikes.api.v1.resources;
 
 import si.fri.rso.teamlj.bikes.entities.Bike;
-import si.fri.rso.teamlj.bikes.services.BikesBean;
+import si.fri.rso.teamlj.bikes.services.beans.BikesBean;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -58,7 +58,7 @@ public class BikesResource {
     }
 
     @PUT
-    @Path("{bikeId}")
+    @Path("/{bikeId}")
     public Response putBike(@PathParam("bikeId") Integer bikeId, Bike bike) {
 
         bike = bikesBean.putBike(bikeId, bike);
@@ -74,7 +74,7 @@ public class BikesResource {
     }
 
     @PATCH
-    @Path("{bikeId}/taken")
+    @Path("/{bikeId}/taken")
     public Response bikeTaken(@PathParam("bikeId") Integer bikeId) {
 
         Bike bike = bikesBean.bikeTaken(bikeId);
@@ -90,7 +90,7 @@ public class BikesResource {
     }
 
     @PUT
-    @Path("{bikeId}/free")
+    @Path("/{bikeId}/free")
     public Response bikeFree(@PathParam("bikeId") Integer bikeId, Bike bike) {
 
         bike = bikesBean.bikeFee(bikeId, bike);
@@ -107,8 +107,8 @@ public class BikesResource {
 
 
     @DELETE
-    @Path("{bikeId}")
-    public Response deleteBike(@PathParam("bikeId") String bikeId) {
+    @Path("/{bikeId}")
+    public Response deleteBike(@PathParam("bikeId") Integer bikeId) {
 
         boolean deleted = bikesBean.deleteBike(bikeId);
 

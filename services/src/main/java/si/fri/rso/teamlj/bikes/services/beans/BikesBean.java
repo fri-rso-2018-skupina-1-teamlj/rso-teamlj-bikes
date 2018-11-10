@@ -1,4 +1,4 @@
-package si.fri.rso.teamlj.bikes.services;
+package si.fri.rso.teamlj.bikes.services.beans;
 
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
@@ -75,7 +75,7 @@ public class BikesBean {
         try {
             beginTx();
             b.setId(b.getId());
-            b = em.merge(b);
+            b = em.merge(bike);
             commitTx();
         } catch (Exception e) {
             rollbackTx();
@@ -113,7 +113,7 @@ public class BikesBean {
             beginTx();
             b.setId(b.getId());
             b.setStatus("free");
-            b = em.merge(b);
+            b = em.merge(bike);
             commitTx();
         } catch (Exception e) {
             rollbackTx();
@@ -122,7 +122,7 @@ public class BikesBean {
         return b;
     }
 
-    public boolean deleteBike(String bikeId) {
+    public boolean deleteBike(Integer bikeId) {
 
         Bike bike = em.find(Bike.class, bikeId);
 
