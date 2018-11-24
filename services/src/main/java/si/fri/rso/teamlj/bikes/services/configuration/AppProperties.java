@@ -1,4 +1,4 @@
-package si.fri.rso.teamlj.rents.services.configuration;
+package si.fri.rso.teamlj.bikes.services.configuration;
 
 import com.kumuluz.ee.configuration.cdi.ConfigBundle;
 import com.kumuluz.ee.configuration.cdi.ConfigValue;
