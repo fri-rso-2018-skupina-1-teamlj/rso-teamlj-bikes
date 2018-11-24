@@ -1,5 +1,6 @@
 package si.fri.rso.teamlj.bikes.services.beans;
 
+import com.kumuluz.ee.discovery.annotations.DiscoverService;
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
 import org.glassfish.jersey.client.HttpUrlConnectorProvider;
@@ -19,12 +20,17 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.UriInfo;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @ApplicationScoped
 public class BikesBean {
 
     private Logger log = Logger.getLogger(BikesBean.class.getName());
+
+    @Inject
+    @DiscoverService("rso-bikes")
+    private Optional<String> baseUrl;
 
     @Inject
     private EntityManager em;
