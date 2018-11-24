@@ -9,9 +9,12 @@ kumuluzee:
       port: 8082
   datasources:
     - jndi-name: jdbc/BikeDS
-      connection-url: jdbc:postgresql://localhost:5434/bike
-      username: postgres
-      password: postgres
+      connection-url: jdbc:postgresql://35.228.47.159:5434/bike
+      username: rso
+      password: rso
+      #connection-url: jdbc:postgresql://localhost:5434/bike
+      #username: postgres
+      #password: postgres
       max-pool-size: 20
   discovery:
     etcd:
