@@ -13,9 +13,9 @@ public class Bike {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private float longitude;
-
     private float latitude;
+
+    private float longitude;
 
     private Integer mapId;
 
