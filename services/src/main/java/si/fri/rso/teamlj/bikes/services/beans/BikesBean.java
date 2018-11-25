@@ -43,6 +43,11 @@ public class BikesBean {
     @Inject
     private EntityManager em;
 
+    @PostConstruct
+    private void init() {
+        httpClient = ClientBuilder.newClient();
+        //baseUrl = "http://localhost:8084"; // bikes
+    }
 
     public List<Bike> getBikes(UriInfo uriInfo) {
 
@@ -103,6 +108,8 @@ public class BikesBean {
 
         Bike bike = getBike(bikeId);
 
+        MapEntity mapEntity = getMapEntity(bike.getMapId());
+
         try {
             beginTx();
             bike.setStatus("taken");
@@ -114,6 +121,8 @@ public class BikesBean {
             rollbackTx();
         }
 
+        removeBikeToMapEntity(mapEntity);
+
         return bike;
     }
 
@@ -124,9 +133,11 @@ public class BikesBean {
 
         List<MapEntity> mapEntityList = getMapEntities();
         Integer mapId = null;
+        MapEntity mapEntityTmp = null;
         for (MapEntity mapEntity : mapEntityList) {
             if (mapEntity.getLatitude() == latitude && mapEntity.getLongitude() == longitude) {
                 mapId = mapEntity.getId();
+                mapEntityTmp = mapEntity;
             }
         }
 
@@ -147,6 +158,8 @@ public class BikesBean {
             rollbackTx();
         }
 
+        addBikeToMapEntity(mapEntityTmp);
+
         return b;
     }
 
@@ -154,8 +167,8 @@ public class BikesBean {
 
         try {
             return httpClient
-                    .target(baseUrlMap.get()  + "/v1/map")
-//                    .target("http://localhost:8084/v1/map")
+//                    .target(baseUrlMap.get()  + "/v1/map")
+                    .target("http://localhost:8084/v1/map")
                     .request().get(new GenericType<List<MapEntity>>() {
                     });
         } catch (WebApplicationException | ProcessingException e) {
@@ -163,6 +176,55 @@ public class BikesBean {
             throw new InternalServerErrorException(e);
         }
 
+    }
+
+    public MapEntity getMapEntity(Integer mapId) {
+
+        try {
+            return httpClient
+//                    .target(baseUrlMap.get()  + "/v1/map/" + mapId)
+                    .target("http://localhost:8084/v1/map/" + mapId)
+                    .request().get(new GenericType<MapEntity>() {
+                    });
+        } catch (WebApplicationException | ProcessingException e) {
+            log.severe(e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
+
+    }
+
+    public void addBikeToMapEntity(MapEntity mapEntity) {
+
+        mapEntity.setNumberOfAvailableBikes(mapEntity.getNumberOfAvailableBikes() + 1);
+
+        try {
+            httpClient
+//                    .target(baseUrlMap.get() + "/v1/map/")
+                    .target("http://localhost:8084/v1/map/" + mapEntity.getId())
+                    .request()
+                    .build("PUT", Entity.json(mapEntity))
+                    .invoke();
+        } catch (WebApplicationException | ProcessingException e) {
+            log.severe(e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
+    }
+
+    public void removeBikeToMapEntity(MapEntity mapEntity) {
+
+        mapEntity.setNumberOfAvailableBikes(mapEntity.getNumberOfAvailableBikes() - 1);
+
+        try {
+            httpClient
+//                    .target(baseUrlMap.get() + "/v1/map/")
+                    .target("http://localhost:8084/v1/map/" + mapEntity.getId())
+                    .request()
+                    .build("PUT", Entity.json(mapEntity))
+                    .invoke();
+        } catch (WebApplicationException | ProcessingException e) {
+            log.severe(e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
     }
 
     public boolean deleteBike(Integer bikeId) {
@@ -174,6 +236,11 @@ public class BikesBean {
                 beginTx();
                 em.remove(bike);
                 commitTx();
+
+                MapEntity mapEntity = getMapEntity(bike.getMapId());
+                removeBikeToMapEntity(mapEntity);
+
+
             } catch (Exception e) {
                 rollbackTx();
             }
