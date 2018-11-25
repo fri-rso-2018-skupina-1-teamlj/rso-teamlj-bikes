@@ -138,6 +138,8 @@ public class BikesBean {
             beginTx();
             b.setMapId(mapId);
             b.setId(b.getId());
+            b.setLatitude(latitude);
+            b.setLongitude(longitude);
             b.setStatus("free");
             b = em.merge(bike);
             commitTx();
