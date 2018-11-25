@@ -19,3 +19,11 @@ kumuluzee:
   discovery:
     etcd:
       hosts: http://localhost:2379
+  metrics:
+    web-instrumentation:
+    - name: bike-endpoint
+      url-pattern: /v1/bikes/*
+  health:
+    checks:
+      data-source-health-check:
+        jndi-name: jdbc/BikeDS
