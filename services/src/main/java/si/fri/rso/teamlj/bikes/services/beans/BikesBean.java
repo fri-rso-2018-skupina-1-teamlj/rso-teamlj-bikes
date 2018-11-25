@@ -167,8 +167,8 @@ public class BikesBean {
 
         try {
             return httpClient
-//                    .target(baseUrlMap.get()  + "/v1/map")
-                    .target("http://localhost:8084/v1/map")
+                    .target(baseUrlMap.get()  + "/v1/map")
+//                    .target("http://localhost:8084/v1/map")
                     .request().get(new GenericType<List<MapEntity>>() {
                     });
         } catch (WebApplicationException | ProcessingException e) {
@@ -182,8 +182,8 @@ public class BikesBean {
 
         try {
             return httpClient
-//                    .target(baseUrlMap.get()  + "/v1/map/" + mapId)
-                    .target("http://localhost:8084/v1/map/" + mapId)
+                    .target(baseUrlMap.get()  + "/v1/map/" + mapId)
+//                    .target("http://localhost:8084/v1/map/" + mapId)
                     .request().get(new GenericType<MapEntity>() {
                     });
         } catch (WebApplicationException | ProcessingException e) {
@@ -199,8 +199,8 @@ public class BikesBean {
 
         try {
             httpClient
-//                    .target(baseUrlMap.get() + "/v1/map/")
-                    .target("http://localhost:8084/v1/map/" + mapEntity.getId())
+                    .target(baseUrlMap.get() + "/v1/map/"  + mapEntity.getId())
+//                    .target("http://localhost:8084/v1/map/" + mapEntity.getId())
                     .request()
                     .build("PUT", Entity.json(mapEntity))
                     .invoke();
@@ -216,8 +216,8 @@ public class BikesBean {
 
         try {
             httpClient
-//                    .target(baseUrlMap.get() + "/v1/map/")
-                    .target("http://localhost:8084/v1/map/" + mapEntity.getId())
+                    .target(baseUrlMap.get() + "/v1/map/" + mapEntity.getId())
+//                    .target("http://localhost:8084/v1/map/" + mapEntity.getId())
                     .request()
                     .build("PUT", Entity.json(mapEntity))
                     .invoke();
