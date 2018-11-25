@@ -4,6 +4,7 @@ import com.kumuluz.ee.discovery.annotations.DiscoverService;
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
 import org.glassfish.jersey.client.HttpUrlConnectorProvider;
+import si.fri.rso.teamlj.bikes.MapEntity;
 import si.fri.rso.teamlj.bikes.entities.Bike;
 
 import javax.annotation.PostConstruct;
@@ -17,6 +18,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.UriInfo;
 import java.time.Instant;
 import java.util.List;
@@ -28,9 +30,15 @@ public class BikesBean {
 
     private Logger log = Logger.getLogger(BikesBean.class.getName());
 
+    private Client httpClient;
+
     @Inject
     @DiscoverService("rso-bikes")
     private Optional<String> baseUrl;
+
+    @Inject
+    @DiscoverService("rso-map")
+    private Optional<String> baseUrlMap;
 
     @Inject
     private EntityManager em;
@@ -98,6 +106,9 @@ public class BikesBean {
         try {
             beginTx();
             bike.setStatus("taken");
+            bike.setMapId(null);
+            bike.setLatitude(0);
+            bike.setLongitude(0);
             commitTx();
         } catch (Exception e) {
             rollbackTx();
@@ -107,9 +118,17 @@ public class BikesBean {
     }
 
     /** posodobimo status kolesa na prost **/
-    public Bike bikeFee(Integer bikeId, Bike bike) {
+    public Bike bikeFree(Integer bikeId, Float latitude, Float longitude, Bike bike) {
 
         Bike b = em.find(Bike.class, bikeId);
+
+        List<MapEntity> mapEntityList = getMapEntities();
+        Integer mapId = null;
+        for (MapEntity mapEntity : mapEntityList) {
+            if (mapEntity.getLatitude() == latitude && mapEntity.getLongitude() == longitude) {
+                mapId = mapEntity.getId();
+            }
+        }
 
         if (b == null) {
             return null;
@@ -117,6 +136,7 @@ public class BikesBean {
 
         try {
             beginTx();
+            b.setMapId(mapId);
             b.setId(b.getId());
             b.setStatus("free");
             b = em.merge(bike);
@@ -126,6 +146,21 @@ public class BikesBean {
         }
 
         return b;
+    }
+
+    public List<MapEntity> getMapEntities() {
+
+        try {
+            return httpClient
+                    .target(baseUrlMap.get()  + "/v1/map")
+//                    .target("http://localhost:8084/v1/map")
+                    .request().get(new GenericType<List<MapEntity>>() {
+                    });
+        } catch (WebApplicationException | ProcessingException e) {
+            log.severe(e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
+
     }
 
     public boolean deleteBike(Integer bikeId) {

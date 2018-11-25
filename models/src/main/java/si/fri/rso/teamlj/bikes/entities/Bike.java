@@ -1,7 +1,6 @@
 package si.fri.rso.teamlj.bikes.entities;
 
 import javax.persistence.*;
-import java.time.Instant;
 
 @Entity(name = "bikes")
 @NamedQueries(value =
@@ -14,9 +13,11 @@ public class Bike {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String longitude;
+    private float longitude;
 
-    private String latitude;
+    private float latitude;
+
+    private Integer mapId;
 
     private String status;
 
@@ -28,19 +29,19 @@ public class Bike {
         this.id = id;
     }
 
-    public String getLatitude() {
+    public float getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(float latitude) {
         this.latitude = latitude;
     }
 
-    public String getLongitude() {
+    public float getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(float longitude) {
         this.longitude = longitude;
     }
 
@@ -50,5 +51,13 @@ public class Bike {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Integer getMapId() {
+        return mapId;
+    }
+
+    public void setMapId(Integer mapId) {
+        this.mapId = mapId;
     }
 }

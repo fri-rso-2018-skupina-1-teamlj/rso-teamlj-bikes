@@ -90,10 +90,10 @@ public class BikesResource {
     }
 
     @PUT
-    @Path("/{bikeId}/free")
-    public Response bikeFree(@PathParam("bikeId") Integer bikeId, Bike bike) {
+    @Path("/{bikeId}/free/{lan}&{lon}")
+    public Response bikeFree(@PathParam("bikeId") Integer bikeId, @PathParam("lan") Float latitude, @PathParam("lon") Float longitude, Bike bike) {
 
-        bike = bikesBean.bikeFee(bikeId, bike);
+        bike = bikesBean.bikeFree(bikeId, latitude, longitude, bike);
 
         if (bike == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
