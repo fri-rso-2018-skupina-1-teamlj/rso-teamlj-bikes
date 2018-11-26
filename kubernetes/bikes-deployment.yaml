@@ -14,13 +14,11 @@ spec:
     spec:
       containers:
       - name: bikes
-        image: jp8874/rso-teamlj-bikes:1.4
+        image: jp8874/rso-teamlj-bikes:1.5
         env:
           - name: KUMULUZEE_DISCOVERY_CLUSTER
             value: gcloud
           - name: KUMULUZEE_DISCOVERY_ETCD_HOSTS
-            value: http://etcd:2379
-          - name: KUMULUZEE_CONFIG_ETCD_HOSTS
             value: http://etcd:2379
         ports:
         - containerPort: 8082
