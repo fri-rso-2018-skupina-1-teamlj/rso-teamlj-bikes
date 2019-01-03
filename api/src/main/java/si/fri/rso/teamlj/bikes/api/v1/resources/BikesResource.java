@@ -1,5 +1,6 @@
 package si.fri.rso.teamlj.bikes.api.v1.resources;
 
+import com.kumuluz.ee.logs.cdi.Log;
 import si.fri.rso.teamlj.bikes.entities.Bike;
 import si.fri.rso.teamlj.bikes.services.beans.BikesBean;
 
@@ -14,6 +15,7 @@ import java.util.List;
 
 @ApplicationScoped
 @Path("/bikes")
+@Log
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class BikesResource {
