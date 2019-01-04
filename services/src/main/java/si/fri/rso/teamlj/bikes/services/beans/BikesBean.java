@@ -16,6 +16,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.ProcessingException;
@@ -27,6 +28,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.UriInfo;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -290,6 +292,20 @@ public class BikesBean {
             log.severe(e.getMessage());
             throw new InternalServerErrorException(e);
         }
+    }
+
+    public List<Integer> getBikeIDs(float lat, float lon) {
+
+        TypedQuery<Bike> query = em.createNamedQuery("Bike.findByLatAndLon", Bike.class)
+                .setParameter("lat", lat)
+                .setParameter("lon", lon);
+
+        List<Integer> list = new ArrayList<>();
+        for (Bike b : query.getResultList()) {
+            list.add(b.getId());
+        }
+
+        return list;
     }
 
     public boolean deleteBike(Integer bikeId) {

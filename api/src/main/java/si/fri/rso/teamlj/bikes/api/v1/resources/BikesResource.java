@@ -35,6 +35,15 @@ public class BikesResource {
     }
 
     @GET
+    @Path("/{lan}&{lon}")
+    public Response bikeFree(@PathParam("lan") Float latitude, @PathParam("lon") Float longitude) {
+
+        List<Integer> bikeIDs = bikesBean.getBikeIDs(latitude, longitude);
+
+        return Response.status(Response.Status.OK).entity(bikeIDs).build();
+    }
+
+    @GET
     @Path("/{bikeId}")
     public Response getBike(@PathParam("bikeId") Integer bikeId) {
 

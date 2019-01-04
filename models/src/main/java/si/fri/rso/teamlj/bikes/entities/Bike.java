@@ -5,7 +5,8 @@ import javax.persistence.*;
 @Entity(name = "bikes")
 @NamedQueries(value =
         {
-                @NamedQuery(name = "Bike.getAll", query = "SELECT b FROM bikes b")
+                @NamedQuery(name = "Bike.getAll", query = "SELECT b FROM bikes b"),
+                @NamedQuery(name = "Bike.findByLatAndLon", query = "SELECT b FROM bikes b WHERE b.latitude = :lat AND b.longitude = :lon")
         })
 public class Bike {
 
