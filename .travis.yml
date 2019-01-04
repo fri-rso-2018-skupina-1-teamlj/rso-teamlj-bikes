@@ -14,7 +14,7 @@ cache:
   - $HOME/.m2
 
 env:
-- DOCKER_IMAGE=jp8874/rso-teamlj-bikes:2.8
+- DOCKER_IMAGE=jp8874/rso-teamlj-bikes:2.9
 
 script:
 - mvn clean package -U

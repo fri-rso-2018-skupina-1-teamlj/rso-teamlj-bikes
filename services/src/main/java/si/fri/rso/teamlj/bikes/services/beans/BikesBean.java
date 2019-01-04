@@ -61,7 +61,7 @@ public class BikesBean {
     @Timed(name = "get_bikes_timed")
     @Counted(name = "get_bikes_counter")
     @CircuitBreaker(requestVolumeThreshold = 3)
-    @Timeout(value = 2, unit = ChronoUnit.SECONDS)
+    @Timeout(value = 5, unit = ChronoUnit.SECONDS)
     @Fallback(fallbackMethod = "getBikesFallback")
     public List<Bike> getBikes(UriInfo uriInfo) {
 
@@ -83,7 +83,7 @@ public class BikesBean {
     @Timed(name = "get_bike_timed")
     @Counted(name = "get_bike_counter")
     @CircuitBreaker(requestVolumeThreshold = 3)
-    @Timeout(value = 2, unit = ChronoUnit.SECONDS)
+    @Timeout(value = 5, unit = ChronoUnit.SECONDS)
     @Fallback(fallbackMethod = "getBikeFallback")
     public Bike getBike(Integer bikeId) {
 
@@ -234,7 +234,7 @@ public class BikesBean {
     @Timed(name = "get_mapEntity_timed")
     @Counted(name = "get_mapEntity_counter")
     @CircuitBreaker(requestVolumeThreshold = 3)
-    @Timeout(value = 2, unit = ChronoUnit.SECONDS)
+    @Timeout(value = 5, unit = ChronoUnit.SECONDS)
     @Fallback(fallbackMethod = "getMapEntityFallback")
     public MapEntity getMapEntity(Integer mapId) {
 
