@@ -29,8 +29,8 @@ kumuluzee:
         jndi-name: jdbc/BikeDS
       disk-space-health-check:
         threshold: 100000000
-      etcd-health-check:
-        connection-url: http://localhost:2379/health
+      #etcd-health-check:
+      #  connection-url: http://localhost:2379/health
   logs:
     config-file: '<?xml version="1.0" encoding="UTF-8"?>
                       <Configuration name="bikes">
