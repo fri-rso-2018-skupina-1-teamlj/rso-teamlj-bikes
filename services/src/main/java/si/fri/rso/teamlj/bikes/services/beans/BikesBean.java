@@ -301,7 +301,9 @@ public class BikesBean {
         List<Integer> list = new ArrayList<>();
         for (Bike b : query.getResultList()) {
             if (b.getLatitude() == lat && b.getLongitude() == lon) {
-                list.add(b.getId());
+                if (b.getStatus().equals("free")) {
+                    list.add(b.getId());
+                }
             }
         }
 
