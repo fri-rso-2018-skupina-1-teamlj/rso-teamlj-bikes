@@ -296,13 +296,13 @@ public class BikesBean {
 
     public List<Integer> getBikeIDs(float lat, float lon) {
 
-        TypedQuery<Bike> query = em.createNamedQuery("Bike.findByLatAndLon", Bike.class)
-                .setParameter("lat", lat)
-                .setParameter("lon", lon);
+        TypedQuery<Bike> query = em.createNamedQuery("Bike.getAll", Bike.class);
 
         List<Integer> list = new ArrayList<>();
         for (Bike b : query.getResultList()) {
-            list.add(b.getId());
+            if (b.getLatitude() == lat && b.getLongitude() == lon) {
+                list.add(b.getId());
+            }
         }
 
         return list;
